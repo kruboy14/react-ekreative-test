@@ -1,11 +1,35 @@
-import { Button } from '@material-ui/core';
+import { Button, makeStyles } from '@material-ui/core';
 import React from 'react';
 import { userApi } from '../utils/api/user';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { userActions } from '../store/actions/user';
+import GoogleButton from 'react-google-button';
+import FacebookIcon from '@material-ui/icons/Facebook';
+
+const LoginStyles = makeStyles({
+  wrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100vh',
+  },
+  facebookBtn: {
+    marginTop: 16,
+    backgroundColor: 'blue',
+    width: 240,
+    color: 'white',
+    '&:hover': {
+      backgroundColor: '#0000ff8f'
+      
+    }
+  },
+});
 
 export const Login = () => {
   const dispatch = useDispatch();
+  const classes = LoginStyles();
+
   const fetchAuthUser = async () => {
     try {
       const { data } = await userApi.fetchAuthUser();
@@ -49,10 +73,14 @@ export const Login = () => {
     }
   };
   return (
-    <div>
-      <Button onClick={redirectToGoogleSign}>Google</Button>
-      <Button onClick={redirectToFacebookSign}>Facebook</Button>
-
+    <div className={classes.wrapper}>
+      <GoogleButton onClick={redirectToGoogleSign}></GoogleButton>
+      <Button
+        startIcon={<FacebookIcon />}
+        onClick={redirectToFacebookSign}
+        className={classes.facebookBtn}>
+        Facebook
+      </Button>
     </div>
   );
 };
